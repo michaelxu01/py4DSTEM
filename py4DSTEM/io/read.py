@@ -4,6 +4,7 @@ import pathlib
 from os.path import exists,splitext
 from .native import read_py4DSTEM, is_py4DSTEM_file
 from .nonnative import *
+from .nonnative.pymultislicer import *
 
 def read(fp, mem="RAM", binfactor=1, ft=None, metadata=False, **kwargs):
     """
@@ -85,7 +86,7 @@ def read(fp, mem="RAM", binfactor=1, ft=None, metadata=False, **kwargs):
         "empad",
         "mrc_relativity",
         "gatan_K2_bin",
-        "kitware_counted",
+        "kitware_counted", "pymultislicer"
     ], "Error: ft argument not recognized"
 
     if ft is None:
@@ -105,6 +106,8 @@ def read(fp, mem="RAM", binfactor=1, ft=None, metadata=False, **kwargs):
         data = read_gatan_K2_bin(fp, mem, binfactor, metadata=metadata, **kwargs)
     elif ft == "kitware_counted":
         data = read_kitware_counted(fp, mem, binfactor, metadata=metadata, **kwargs)
+    elif ft == "pymultislicer":
+        data = read_pymultislicer(fp, mem, binfactor, metadata=metadata, **kwargs)
     else:
         raise Exception(
             "Unrecognized file extension {}.  To force reading as a particular filetype, pass the 'ft' keyword argument.".format(
